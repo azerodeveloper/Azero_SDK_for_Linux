@@ -9,17 +9,18 @@
 * [附录](#Appendix)
 
 ## 说明<a id="Description"></a>
-此文档负责帮助大家在设备上运行示例，当前支持arm-linux-gnueabihf、aarch64-gnu版本。按照步骤操作可保证示例demo以2mic的形式跑通。
+此文档负责帮助大家在设备上运行示例，当前支持arm-linux-gnueabihf、aarch64-gnu、Ubuntu x86-64、arm-openwrt-muslgnueabi、arm-openwrt-glibc版本。按照步骤操作可保证示例demo以2mic的形式跑通。
 
 ## 工程结构<a id="Contents"></a>
 
-* config_file : 配置文件目录
-    * config.json ：后面注册获取的clientId、productId以及设备唯一的deviceSerialNumber在此文件修改
+* sai_config : 配置文件目录，根据版本又分为arm、x86_64-linux目录
+    * config.json ：后续步骤注册获取到的clientId、productId以及设备唯一的deviceSerialNumber在此文件修改
     * 其它 ： 其它文件无需修改
 * include : Azero SDK的.h文件
 * link-libs :  编译示例代码所需的依赖库，目录中分版本放置。
     * lib : Azero SDK库
     * libvlc : SDK依赖的播放器库，默认支持的播放器为VLC
+    * 其它 ： 其它类型的播放器，视版本而定
 * src : 示例代码
     * main.cpp
 * toolchain-cmake ： cmake交叉编译配置文件
@@ -33,12 +34,12 @@
 * 设备平台对应的编译链
 * cmake 3.5以上
 
-#### 编译方式<a id="CompilationMethod"></a>
+#### arm系版本编译方式<a id="CompilationMethod"></a>
 在工程根目录执行run.sh脚本，如下所示：
 
 ![run.png](./assets/run.png)
 
-未加参数运行，会打印出编译命令格式说明。当前已支持的版本有arm-linux-gnueabihf、aarch64-gnu。
+未加参数运行，会打印出编译命令格式说明。当前已支持的版本有arm-linux-gnueabihf、aarch64-gnu、Ubuntu x86-64、arm-openwrt-muslgnueabi、arm-openwrt-glibc。
 
 根据编译机交叉编译链的安装路径修改toolchain-cmake目录中对应版本的cmake配置文件并配置环境变量。以arm-linux-gnueabihf为例：
 1. 假设编译机交叉编译链安装路径为/usr/local/share/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf。修改toolchain-cmake/arm-linux-gnueabihf-toolchain.cmake文件中的CROSS_COMPILING_ROOT项为上述路径(aarch64-gnu修改toolchain-cmake/aarch64-gnu-toolchain.cmake)。
@@ -55,7 +56,11 @@ $export PATH=$PATH:/usr/local/share/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gn
 $./run.sh arm-linux-gnueabihf
 ```
 
-若工程根目录生成了示例程序sai_client，则代表编译成功。
+若工程根目录生成了示例程序sai_client，则代表编译成功。其它arm系列版本编译链配置方法类似。
+
+#### Ubuntu x86-64 编译运行方法
+Ubuntu x86-64编译运行方法略有不同，见[Ubuntu Linux 16.04 LTS (x86_64) 编译指引](./doc/ubuntu16.04_x86_64_build_guide.pdf)
+
 
 ## 示例运行<a id="QuickStart"></a>
 软件初始化时需要三个参数：clientId、productId以及deviceSerialNumber。其中，clientId、productId用以标识产品类别，deviceSerialNumber用以标识个体设备。它们的获取方式如下：
@@ -104,20 +109,21 @@ Note：选取的设备需确保arecord可正常录取到音频，录音所需的
     SaiMicBaseX_SetRefShiftBits(handle,16);
     
     //与设备相关，对应arecord的--period-size项，一般无需修改。
-    SaiMicBaseX_SetPeroidSize(handle,1024);
+    SaiMicBaseX_SetPeroidSize(handle,512);
     
     //与设备相关，对应arecord的--buffer-size项，一般无需修改。
-    SaiMicBaseX_SetBufferSize(handle,262144);
+    SaiMicBaseX_SetBufferSize(handle,4096);
 ```
 2. 按照“[编译方式](#CompilationMethod)”将改好参数的main.cpp编译成可执行程序sai_client。
-3. 将“[设备注册](#DeviceRegist)”中获取到的clientId与productId分别填写到config_file目录中config.json文件的clientId字段与productId字段，config.json文件中deviceSerialNumber字段填写此设备的唯一字符串即可，一般使用mac地址。若clientID与productID填写不正确可能会使示例程序sai_client初始化时授权不通过。
-4. 将sai_client、link-libs中对应版本的库文件推送到设备中，并配置好库目录中各个库的软链接。例如，我们要在某台设备的/tmp/azerotest下运行示例程序sai_client，假设这台设备已经默认安装了vlc播放器。
-5. 将config_file目录的文件推送到/data目录下，若data空间有限，可使用软链接的方式将配置文件链接到/data下。
+3. 将“[设备注册](#DeviceRegist)”中获取到的clientId与productId分别填写到sai_config目录对应版本的config.json文件中clientId字段与productId字段，config.json文件中deviceSerialNumber字段填写此设备的唯一字符串即可，一般使用mac地址。若clientID与productID填写不正确可能会使示例程序sai_client初始化时授权不通过。（arm-openwrt-glibc版本，参数clientID、productID与deviceSerialNumber在src/main.cpp中通过azero_set_customer_info接口配置。）
+4. 将编译生成的sai_client、link-libs目录中对应版本的库文件推送到设备中，并按需要配置好库目录中各个库的软链接。例如，我们要在某台设备的/tmp/azerotest下运行示例程序sai_client，并假设这台设备已经默认安装了vlc播放器。
+5. 将sai_config目录的文件推送到/data目录下，若data空间有限，可使用软链接的方式将配置文件链接到/data下。
 6. 配置好环境变量，运行sai_client即可。
-7. 示例程序唤醒词为“小易小易”，音箱给出唤醒提示后，即可说出命令词。例如，“小易小易，播放歌曲”；“小易小易，我想听相声”。
+7. 示例程序唤醒词为“小易小易”，音箱给出唤醒提示后，即可说出命令词。例如，“小易小易，播放歌曲”、“小易小易，我想听相声”、“小易小易，今天天气”。
 
-* *若数据采集有问题，可基于[BaseX](https://github.com/SoundAItech/BaseX)仓库编译调试，编译出库的名字为libsai_micbasex.so，测试OK后替换掉设备上放置库目录中的同名库文件再运行示例程序sai_client即可。*
-* *config_file目录config.json文件中，键值为db后缀名的文件是运行时自动生成的文件，其生成位置可自行配置。运行前请确认路径有效。*
+* *若数据采集有问题，可基于[BaseX](https://github.com/sai-azero/BaseX)仓库编译调试，编译出库的名字为libsai_micbasex.so，测试OK后替换掉设备上放置库目录中的同名库文件再运行示例程序sai_client即可。*
+* *sai_config目录config.json文件中，键值为db后缀名的文件是运行时自动生成的文件，其生成位置可自行配置。运行前请确认路径有效。*
+* 当前arm系列版本支持的通道数为8,若设备数据通道数小于8需在main.cpp读数据部分自行填充。
 
 ![CommandExample](./assets/CommandExample.png)
 

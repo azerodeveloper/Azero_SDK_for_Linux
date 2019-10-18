@@ -3,17 +3,24 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 option(SAI_BUILD_FOR_LINUX_ARM32 "build for arm-linux-gnueabihf-" OFF)
-option(SAI_BUILD_FOR_LINUX_ARM64 "build for aarch64-linux-gnu-" ON)
-option(SAI_BUILD_FOR_OPENWRT "build for arm-openwrt-linux-" OFF)
+option(SAI_BUILD_FOR_LINUX_ARM64 "build for aarch64-linux-gnu-" OFF)
+option(SAI_BUILD_FOR_MUSL_OPENWRT "build for arm-openwrt-linux-" OFF)
+option(SAI_BUILD_FOR_GLIBC_OPENWRT "build for arm-openwrt-glibc-linux-" OFF)
 option(SAI_BUILD_FOR_Android_32 "build for Android armeabi-v7a" OFF)
 option(SAI_BUILD_FOR_Android_64 "build for Android arm64-v8a" OFF)
+option(SAI_BUILD_FOR_LINUX_X86_64 "build for x86_64-linux-gnu-" OFF)
 
 option(SAI_ENABLE_BUILD_OPENDENOISE "only used in this CMake" OFF)
 option(SAI_ENABLE_DEBUG_PCM_LOCAL "enable write RAW/WK/ASR pcm files for debug" OFF)
 
-if((SAI_BUILD_FOR_LINUX_ARM32) OR (SAI_BUILD_FOR_LINUX_ARM64) OR (SAI_BUILD_FOR_OPENWRT))
+if((SAI_BUILD_FOR_LINUX_ARM32) OR (SAI_BUILD_FOR_LINUX_ARM64) OR (SAI_BUILD_FOR_MUSL_OPENWRT) OR (SAI_BUILD_FOR_GLIBC_OPENWRT))
     add_definitions(-DSAI_SDK_INTEGRATE_OPENDENOISE)
     set(SAI_ENABLE_BUILD_OPENDENOISE  ON)
+endif()
+
+if((SAI_BUILD_FOR_GLIBC_OPENWRT))
+    add_definitions(-DSAI_READ_ASR_DATA)
+    add_definitions(-DSAI_BUILD_FOR_GLIBC_OPENWRT)
 endif()
 
 option(SAI_ENABLE_MIGU "enable migu service for arm-linux-gnueabihf-" OFF)
@@ -39,19 +46,37 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND CMAKE_GENERATOR STREQUAL "Unix Makefil
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fprofile-instr-generate")
 endif()
 
+if (SAI_BUILD_FOR_LINUX_X86_64)
+	if (NOT PORTAUDIO)
+	    message( FATAL_ERROR "Must enable PORTAUDIO for x86_64-linux platform" )
+	endif()
+	set(SAI_ENABLE_BUILD_OPENDENOISE  ON)
+	add_definitions(-DSAI_BUILD_FOR_LINUX_X86_64)
+endif()
 
-set(CXX_HEADER_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/azero_sdk_api.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/azero_sdk_operator.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/sai_micbasex_interface.h
-)
+if (SAI_ENABLE_BUILD_OPENDENOISE)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSAI_ENABLE_BUILD_OPENDENOISE")
+endif()
 
-
-
-set(CXX_SOURCE_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-)
-
+if (SAI_BUILD_FOR_LINUX_X86_64)
+	set (CXX_HEADER_FILES
+		${CMAKE_CURRENT_SOURCE_DIR}/include/azero_sdk_api.h
+	    ${CMAKE_CURRENT_SOURCE_DIR}/include/azero_sdk_operator.h
+		${CMAKE_CURRENT_SOURCE_DIR}/src/PortAudioMicrophoneWrapper.h )
+	set (CXX_SOURCE_FILES
+		${CXX_SOURCE_FILES}
+		${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/src/PortAudioMicrophoneWrapper.cpp )
+else()
+	set(CXX_HEADER_FILES
+	    ${CMAKE_CURRENT_SOURCE_DIR}/include/azero_sdk_api.h
+	    ${CMAKE_CURRENT_SOURCE_DIR}/include/azero_sdk_operator.h
+	    ${CMAKE_CURRENT_SOURCE_DIR}/include/sai_micbasex_interface.h
+	)
+	set(CXX_SOURCE_FILES
+	    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+	)
+endif()
 add_executable(sai_client
     ${CXX_HEADER_FILES}
     ${CXX_SOURCE_FILES}
@@ -90,11 +115,50 @@ elseif((SAI_BUILD_FOR_LINUX_ARM64) AND (SAI_ENABLE_BUILD_OPENDENOISE))
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libasound.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libsai_micbasex.so
     )
-elseif((SAI_BUILD_FOR_OPENWRT) AND (SAI_ENABLE_BUILD_OPENDENOISE)) #need to do
+elseif((SAI_BUILD_FOR_MUSL_OPENWRT) AND (SAI_ENABLE_BUILD_OPENDENOISE)) #need to do
     target_link_libraries(sai_client
-        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-linux/lib/libopen_denoise.so
-        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-linux/lib/libsai_micbasex.so
-        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-linux/lib/libasound.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroOS.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroCBL.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroNVG.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroPCC.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroEngine.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroCore.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroTplayer.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libsai_micbasex.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libasound.so
+        -Wl,-rpath-link=${CMAKE_SOURCE_DIR}/link-libs/arm-openwrt-musl/libtp
+    )
+elseif((SAI_BUILD_FOR_GLIBC_OPENWRT) AND (SAI_ENABLE_BUILD_OPENDENOISE))
+    target_link_libraries(sai_client
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroOS.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroCBL.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroNVG.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroPCC.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroEngine.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroCore.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAVSCommon.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroGplayer.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/gplayer/libgplayer.so
+        -Wl,-rpath-link=${CMAKE_SOURCE_DIR}/link-libs/arm-openwrt-glibc/gplayer
+    )
+elseif(SAI_BUILD_FOR_LINUX_X86_64)
+	target_include_directories(sai_client PUBLIC
+		"${INCLUDE_DIRECTORIES}"
+		"${PORTAUDIO_INCLUDE_DIR}"
+	)
+		
+    target_link_libraries(sai_client
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroOS.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroCBL.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroNVG.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroPCC.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroEngine.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroCore.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAVSCommon.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroGStreamer.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libSQLiteStorage.so
+        "${PORTAUDIO_LIB_PATH}"
+        asound
     )
 endif()
 

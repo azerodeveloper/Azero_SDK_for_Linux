@@ -1,0 +1,92 @@
+{
+    "deviceInfo": {
+        "clientId": "xxxxxx",
+        "deviceSerialNumber": "xxxx",
+        "productId": "xxxxx"
+    },
+    "aace.alexa": {
+       "system": {
+           "firmwareVersion": 2019010807,
+           "volume": 80,
+	   "wifi_ssid": "SSID_SAI",
+	   "bluetooth_active": true,
+	   "device_id": "123456789",
+	   "mac": "66:66:88:99",
+	   "ip": "192:168.1.116"
+        },
+        "speechRecognizer": {
+           "encoder": {
+                "name": "opus"
+           }
+        }
+    },
+    "aace.cbl": {
+        "cbl_endpoint": "https://api-azero.soundai.cn/v1/auth/access",
+        "def_endpoint": "https://azero.soundai.cn"
+    },
+    "aace.opendenoise": {
+       "VAD": {
+           "localVAD": true
+        }
+    },
+    "libcurlUtils": {
+        "CURLOPT_CAPATH": "/etc/ssl/certs"
+    },
+    "miscDatabase": {
+        "databaseFilePath": "/data/miscDatabase.db"
+    },
+    "certifiedSender": {
+        "databaseFilePath": "/data/certifiedSender.db"
+    },
+    "alertsCapabilityAgent": {
+        "databaseFilePath": "/data/alertsCapabilityAgent.db"
+    },
+    "notifications": {
+        "databaseFilePath": "/data/notifications.db"
+    },
+    "settings": {
+        "databaseFilePath": "/data/settings.db",
+        "defaultAVSClientSettings": {
+            "locale": "CN"
+        }
+    },
+    "aace.storage": {
+        "localStoragePath": "/data/sample-aace.db",
+        "storageType": "sqlite"
+    },
+    "aace.vehicle": {
+        "info": {
+            "make": "Azero",
+            "model": "Azero",
+            "year": "2019",
+            "trim": "v2",
+            "geography": "CN",
+            "version": "1.2.3",
+            "os": "Sample OS 1.0",
+            "arch": "Sample Arch 1.0",
+            "language": "en-US",
+            "microphone": "SingleArray",
+            "countries": "US,GB,IE,CA,DE,AT,IN,JP,AU,NZ,FR",
+            "vehicleIdentifier": "Sample Identifier ABC"
+        },
+        "operatingCountry": "CN"
+    },
+	"aace.logger":{
+        "sinks": [{
+           "id": "azero",
+           "type": "aace.logger.sink.file",
+           "config": {
+             "path": "/tmp/",
+             "prefix": "azero",
+             "maxSize": 5242880,
+             "maxFiles": 2,
+             "append": true
+           }}],
+        "rules": [{
+            "sink":"azero",
+            "rule":{
+                "level":"INFO"
+            }
+        }]
+    }
+}

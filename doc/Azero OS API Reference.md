@@ -239,8 +239,11 @@ SAI_API void azero_register_wakenup_cb(void(*azero_wakenup_cb)(
 ### 语音识别
 
 ```c
-/*数据识别数据输入接口*/
+/*原始多通道数据输入接口*/
 SAI_API int azero_audio_data_input(const short int *audio_buf, int buf_size);
+
+/* 单路识别数据输入接口 */
+SAI_API int azero_audio_data_input_mono(const short int *audio_buf, int buf_size);
 ```
 
 ### 蓝牙控制

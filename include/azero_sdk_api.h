@@ -65,7 +65,9 @@ typedef enum {
 	///Config network key event
 	AZERO_KEY_EVT_NET_CONFIG,
 	///Turn on led key event
-	AZERO_KEY_EVT_TOGGLE_LED,
+	AZERO_KEY_EVT_LED_ON,
+	///Turn off led key event
+	AZERO_KEY_EVT_LED_OFF,
 	///Customized key event
 	AZERO_KEY_EVT_CUSTOM
 }azero_key_event_e;
@@ -301,6 +303,16 @@ SAI_API int azero_set_wakeup_status(int status);
 SAI_API int azero_audio_data_input(const short int *audio_buf, int buf_size);
 
 /**
+* Input audio data to Azero SDK, currently only 16k/16bit raw data supported.
+*
+* @param [in] audio_buf The data buffer bear audio data.
+* @param [in] buf_size The audio_buf size.
+* @return -1: if failed, the others is successfully.
+*/
+
+SAI_API int azero_audio_data_input_mono(const short int *audio_buf, int buf_size);
+
+/**
 * Play audio file by Azero SDK.
 *
 * @param [in] absolute path of audio file.
@@ -368,7 +380,7 @@ SAI_API void azero_register_wakenup_cb(void(*azero_wakenup_cb)(
 /**
 * Start TTS player play for customer input.
 *
-* @param [in] tts_text The content TXT that customer requeir to play.
+* @param [in] tts_text The content TXT that customer requeir to play, max 2048 size.
 */
 SAI_API void azero_play_user_tts(const char * tts_text);
 
