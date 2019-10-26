@@ -8,12 +8,12 @@
 * Ubuntu能连接互联网
 
 ## 开始
-1. 更新最新的包
+##### 1. 更新最新的包
 ```
 sudo apt update
 sudo apt upgrade
 ```
-2. 安装编译运行依赖包
+##### 2. 安装编译运行依赖包
 ```
 sudo apt install -y wget gcc g++ cmake git openssl libgstreamer1.0-dev \
 libgstreamer-plugins-base1.0-dev gstreamer1.0-plugins-good \
@@ -26,7 +26,7 @@ gcc (Ubuntu 5.4.0-6ubuntu1~16.04.11) 5.4.0 20160609
 g++ (Ubuntu 5.4.0-6ubuntu1~16.04.11) 5.4.0 20160609
 ```
 
-3. 下载并编译代码
+##### 3. 下载并编译代码
 ```
 mkdir -p ~/git
 cd ~/git
@@ -47,21 +47,13 @@ cd ../../
 ```
 此时，本地目录下会生成sai_client可执行文件
 
-4. 注册设备
+##### 4. 注册设备
 参考[说明](../README.pdf)到官网注册设备
 
-5. 修改配置文件
-将~/git/Azero_Sample_for_Linux/sai_config/x86_64-linux 目录下config.json中
-```
-    "deviceInfo": {
-        "clientId": "xxxxxx",
-        "deviceSerialNumber": "xxxx",
-        "productId": "xxxxx"
-    },
-```
-clientId的值修改成已发布设备的"Client ID", productId的值修改成"产品ID",deviceSerialNumber做为演示程序可随便填写数字或字母组合。
+##### 5. 修改配置文件
+参考[说明](../README.pdf)进行配置
 
-6. 运行
+##### 6. 运行
 ```
 cd ~/git/Azero_Sample_for_Linux
 export LD_LIBRARY_PATH=$PWD/link-libs/x86_64-linux/lib

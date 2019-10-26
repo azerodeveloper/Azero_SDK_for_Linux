@@ -158,10 +158,10 @@ void *read_asr_handler(void *args){
 void* load_plugin_basex() {
 	void *handle;
     int mic_num = 2;
-    int board_num = 3;
+    int board_num = 8;
     int frame = 16*16;
-    const char *hw = "hw:audiocodec"; 
-    char chmap[16] = "0,1,2";
+    const char *hw = "hw:0,0"; 
+    char chmap[16] = "0,1,3,4,2,5,6,7";
     handle = SaiMicBaseX_Init(board_num, mic_num, frame, hw);
 
     SaiMicBaseX_SetBit(handle,16);
@@ -169,7 +169,7 @@ void* load_plugin_basex() {
     SaiMicBaseX_SetMicShiftBits(handle,16);
     SaiMicBaseX_SetRefShiftBits(handle,16);
     SaiMicBaseX_SetPeroidSize(handle,512);
-    SaiMicBaseX_SetBufferSize(handle,2048);
+    SaiMicBaseX_SetBufferSize(handle,4096);
 
     const char *delim = ",";
     const char *token = strtok(chmap, delim);
@@ -236,13 +236,12 @@ int main(int argc, const char *argv[]) {
     debug_log_with_tag(TAG, "Azero OS started");
     std::cout << "Azero OS version:" << azero_get_sdk_version() << std::endl;
 
-#ifdef SAI_BUILD_FOR_GLIBC_OPENWRT
     //config customer info
     const char *client_ID = "xxxxxxxx"; //set to your own client
     const char *product_ID = "xxxxxxxx"; //set your owner product ID
     const char *device_SN = "xxxxxxxx"; //set the unique device SN.
     azero_set_customer_info(client_ID,product_ID,device_SN);
-#endif
+
     //set volume callback
     debug_log_with_tag(TAG, "set volume call back!");
     azero_register_set_volume_cb(demo_set_volume_cb);
