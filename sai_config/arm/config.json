@@ -87,6 +87,12 @@
             "rule":{
                 "level":"INFO"
             }
+        },
+        {
+            "sink":"default",
+            "rule":{
+                "level":"INFO"
+            }
         }]
     }
 }
