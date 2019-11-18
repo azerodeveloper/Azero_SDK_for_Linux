@@ -1,6 +1,6 @@
 # Ubuntu Linux 16.04 LTS (x86_64) 编译指引
 这是一份快速指引你在Ubuntu Linux 16.04 LTS (x86_64)上编译Azero Sample项目并在Ubuntu Linux 16.04 LTS (x86_64)本地运行的简要手册。
-阅读本文档之前强烈建议先阅读[AzeroSample项目的README](../README.pdf)
+阅读本文档之前强烈建议先阅读[《Azero Linux 新手运行说明》](../../README.md)。
 
 ## 准备条件
 * Ubuntu Linux 16.04 LTS x86_64
@@ -48,10 +48,10 @@ cd ../../
 此时，本地目录下会生成sai_client可执行文件
 
 ##### 4. 注册设备
-参考[说明](../README.pdf)到官网注册设备
+参考[《Azero Linux 新手运行说明》](../../README.md)到官网注册设备
 
 ##### 5. 修改配置文件
-参考[说明](../README.pdf)进行配置
+参考[《Azero Linux 新手运行说明》](../../README.md)进行配置
 
 ##### 6. 运行
 ```

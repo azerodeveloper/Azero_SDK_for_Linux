@@ -3,13 +3,20 @@
 ## 目录
 
 * [说明](#Description)
+* [下载](#Donwload)
 * [工程结构](#Contents)
 * [编译环境搭建](#Compiled)
 * [示例运行](#QuickStart)
 * [附录](#Appendix)
+    * [通道顺序设置方法](#ChangeChannelMap)
+    * [其它文档](#OtherDoc)
 
 ## 说明<a id="Description"></a>
 此文档负责帮助大家在设备上运行示例，当前支持arm-linux-gnueabihf、aarch64-gnu、Ubuntu x86-64、arm-openwrt-muslgnueabi、arm-openwrt-glibc版本。按照步骤操作可保证示例demo以2mic的形式跑通。
+
+## 下载<a id="Download"></a>
+* Github下载：https://github.com/sai-azero/Azero_SDK_for_Linux/releases
+* 网盘下载：https://pan.baidu.com/s/1eNPBimZw6UzUNGUyucEfCQ
 
 ## 工程结构<a id="Contents"></a>
 
@@ -57,7 +64,7 @@ $./run.sh arm-linux-gnueabihf
 若工程根目录生成了示例程序sai_client，则代表编译成功。其它arm系列版本编译链配置方法类似。
 
 #### Ubuntu x86-64 编译运行方法
-Ubuntu x86-64编译运行方法略有不同，见[Ubuntu Linux 16.04 LTS (x86_64) 编译指引](./doc/ubuntu16.04_x86_64_build_guide.pdf)
+Ubuntu x86-64编译运行方法略有不同，见[Ubuntu Linux 16.04 LTS (x86_64) 编译指引](./doc/Ubuntu/ubuntu16.04_x86_64_build_guide.md)
 
 
 ## 示例运行<a id="QuickStart"></a>
@@ -125,7 +132,6 @@ Note：选取的设备需确保arecord可正常录取到音频，录音所需的
 5. 配置好环境变量，运行sai_client即可。
 6. 示例程序唤醒词为“小易小易”，音箱给出唤醒提示后，即可说出命令词。例如，“小易小易，播放歌曲”、“小易小易，我想听相声”、“小易小易，今天天气”。
 
-* *若数据采集有问题，可基于[BaseX](https://github.com/sai-azero/BaseX)仓库编译调试，编译出库的名字为libsai_micbasex.so，测试OK后替换掉设备上放置库目录中的同名库文件再运行示例程序sai_client即可。*
 * *sai_config目录config.json文件中，键值为db后缀名的文件是运行时自动生成的文件，其生成位置可自行配置。运行前请确认路径有效。*
 * *当前arm系列版本支持的通道数为8,若设备数据通道数小于8需在main.cpp读数据部分自行填充。*
 
@@ -160,6 +166,11 @@ $ touch savebasex.pcm
 
 7. 将计算好的通道顺序填写在chmap配置项中即可。
 
-#### 更多技能与进阶调优
+#### 其它<a id="OtherDoc"></a>
+
+* [Ubuntu Linux 16.04 LTS (x86_64) 编译指引](./doc/Ubuntu/ubuntu16.04_x86_64_build_guide.md)
+* [Azero树莓派运行参考](./doc/raspberryPI/raspberryPI_guide.md)
+
+## 更多技能与进阶调优
 * 更丰富的技能和个性化定制体验，请到[技能商店](https://azero.soundai.com/skill-store/all-skills)为设备配置官方或者第三方技能，也可以按照[技能接入介绍](https://azero.soundai.com/docs/document)创建自有技能，实现定制化需求。
 * 若需将Azero SDK集成到您的工程，并针对您的设备进行唤醒、识别等语音交互效果的调优请参照进阶文档(暂未发布)。
