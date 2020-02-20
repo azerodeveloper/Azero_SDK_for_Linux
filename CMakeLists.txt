@@ -92,7 +92,6 @@ if((SAI_BUILD_FOR_LINUX_ARM32) AND (SAI_ENABLE_BUILD_OPENDENOISE))
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/lib/libAzeroOS.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/lib/libAzeroCBL.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/lib/libAzeroNVG.so
-        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/lib/libAzeroPCC.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/lib/libAzeroEngine.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/lib/libAzeroCore.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/libvlc/libvlc.so.5
@@ -106,7 +105,6 @@ elseif((SAI_BUILD_FOR_LINUX_ARM64) AND (SAI_ENABLE_BUILD_OPENDENOISE))
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libAzeroOS.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libAzeroCBL.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libAzeroNVG.so
-        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libAzeroPCC.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libAzeroEngine.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libAzeroCore.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/libvlc/libvlc.so.5
@@ -120,7 +118,6 @@ elseif((SAI_BUILD_FOR_MUSL_OPENWRT) AND (SAI_ENABLE_BUILD_OPENDENOISE)) #need to
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroOS.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroCBL.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroNVG.so
-        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroPCC.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroEngine.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroCore.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-musl/lib/libAzeroTplayer.so
@@ -133,7 +130,6 @@ elseif((SAI_BUILD_FOR_GLIBC_OPENWRT) AND (SAI_ENABLE_BUILD_OPENDENOISE))
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroOS.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroCBL.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroNVG.so
-        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroPCC.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroEngine.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAzeroCore.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-openwrt-glibc/lib/libAVSCommon.so
@@ -151,7 +147,6 @@ elseif(SAI_BUILD_FOR_LINUX_X86_64)
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroOS.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroCBL.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroNVG.so
-        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroPCC.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroEngine.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroCore.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAVSCommon.so

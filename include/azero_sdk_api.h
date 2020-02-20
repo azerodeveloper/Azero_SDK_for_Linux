@@ -68,6 +68,10 @@ typedef enum {
 	AZERO_KEY_EVT_LED_ON,
 	///Turn off led key event
 	AZERO_KEY_EVT_LED_OFF,
+	///sync local volume to server key event
+	AZERO_KEY_EVT_VOL_CHANGED,
+	///reset SDK status key event
+        AZERO_KEY_EVT_RESET_SDK_STATUS,
 	///Customized key event
 	AZERO_KEY_EVT_CUSTOM
 }azero_key_event_e;
@@ -142,7 +146,11 @@ typedef enum {
 	///The inbound call has been received.
 	AZERO_EVT_PHONE_CALL_RECEIVED,
 	///Phone Call in inbound ringing state
-	AZERO_EVT_PHONE_CALL_INBOUND_RINGING
+	AZERO_EVT_PHONE_CALL_INBOUND_RINGING,
+	///NET status checked from AlexaClient::ConnectionStatus
+	AZERO_EVT_NET_CONNECTED,
+	AZERO_EVT_NET_PENDING,
+	AZERO_EVT_NET_DISCONNECTED
 }azero_status_event_e;
 
 /**
@@ -221,6 +229,19 @@ SAI_API void azero_set_customer_info(const char *client_ID,
 									 const char *device_SN);
 
 /**
+* The configured server address information input(overwrite Defalut server).
+* Defalut server configured by config.json if not use this API.
+* Must be called before azero_start_service() if use it.
+* PLS contact Azero FAE before use this API;
+*
+* @param [in] azero_server_type The server address.
+*     PRO: server for product
+*     FAT: server for debug
+*     DEV: server for pre validation
+*/
+SAI_API void azero_set_server_type(const char *azero_server_type);
+
+/**
 * Set device and system information.
 *
 * @param [in] azero_device_info_json The device relevant information in json 
@@ -285,6 +306,15 @@ SAI_API void azero_register_bind_verification_cb(void(*azero_bind_verification_c
 												 const char *verifcation_code));
 
 /**
+* The callback to get the OTA Upgarade URL that noticed from Azero server.
+*
+* @param [out] AzeroUpgradURL The OTA URL from server.
+* @param [out] AzeroUpgradmd5sum The OTA md5sum from server.
+*/
+SAI_API void azero_register_upgrade_notice_cb(void(*azero_upgarade_URL_cb)(
+												 const char *AzeroUpgradURL, const char *AzeroUpgradmd5sum));
+
+/**
 * Set SDK in wakeup status then ready to capture audio data for ASR.
 *
 * @param [in] status  set 1 to wakeup the SDK and 0 to unwakeup it.
@@ -293,11 +323,11 @@ SAI_API void azero_register_bind_verification_cb(void(*azero_bind_verification_c
 SAI_API int azero_set_wakeup_status(int status);
 
 /**
-* Input audio data to Azero SDK, currently only 16k/16bit raw data supported.
+* Input raw audio data to Azero SDK, normally which should include mic and echo samples, Ex. the data read out by Basex.
 *
 * @param [in] audio_buf The data buffer bear audio data.
-* @param [in] buf_size The audio_buf size.
-* @return -1: if failed, the others is successfully. 
+* @param [in] buf_size The audio_buf size, each size is 16bit.
+* @return -1: if failed, the others is successfully.
 */
 
 SAI_API int azero_audio_data_input(const short int *audio_buf, int buf_size);
@@ -306,7 +336,7 @@ SAI_API int azero_audio_data_input(const short int *audio_buf, int buf_size);
 * Input audio data to Azero SDK, currently only 16k/16bit raw data supported.
 *
 * @param [in] audio_buf The data buffer bear audio data.
-* @param [in] buf_size The audio_buf size.
+* @param [in] buf_size The audio_buf size, each size is 16bit.
 * @return -1: if failed, the others is successfully.
 */
 
@@ -384,6 +414,13 @@ SAI_API void azero_register_wakenup_cb(void(*azero_wakenup_cb)(
 */
 SAI_API void azero_play_user_tts(const char * tts_text);
 
+/**
+* Input text for nlp request.
+*
+* @param [in] nlp_text The content that request nlp process, max 1024 size.
+*/
+SAI_API void azero_request_nlp_text(const char * nlp_text);
+
 /*The callback of bluetooth open/close processing.
 *
 * @param [in] bluetooth_action The action towards bluetooth.
@@ -405,6 +442,15 @@ SAI_API int azero_input_status_inf(azero_input_status_e input_status );
 * reset http service for network switch or reconnect.
 */
 SAI_API void azero_reset_http_service(void);
+
+/*The callback of offline command.
+*
+* @param [in] cmd_word The callback command word.
+*
+* @return The result of process, 0: successful, -1: failed.
+*/
+
+SAI_API void azero_register_offline_cmd_cb(int (*azero_offline_cmd_cb)(const char* cmd_word));
 
 /**
 * Get the SDK version info.

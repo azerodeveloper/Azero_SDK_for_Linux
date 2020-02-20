@@ -30,9 +30,9 @@ g++ (Ubuntu 5.4.0-6ubuntu1~16.04.11) 5.4.0 20160609
 ```
 mkdir -p ~/git
 cd ~/git
-git clone https://github.com/sai-azero/Azero_Sample_for_Linux.git
+git clone https://github.com/sai-azero/Azero_SDK_for_Linux.git
 
-cd Azero_Sample_for_Linux
+cd Azero_SDK_for_Linux
 
 mkdir third-party
 cd third-party
@@ -55,9 +55,8 @@ cd ../../
 
 ##### 6. 运行
 ```
-cd ~/git/Azero_Sample_for_Linux
-export LD_LIBRARY_PATH=$PWD/link-libs/x86_64-linux/lib
+cd ~/git/Azero_SDK_for_Linux
 sudo ln -s $PWD/sai_config/x86_64-linux /data
-./sai_client
+sudo LD_LIBRARY_PATH=$PWD/link-libs/x86_64-linux/lib ./sai_client
 ```
 大概等6秒后就能用"小易小易"唤醒Azero系统
