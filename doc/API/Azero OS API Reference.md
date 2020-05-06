@@ -1,3 +1,7 @@
+<div align="right">
+<img src="../../assets/soundai.png" height = "30" alt="SoundAI" align=middle />
+</div>
+
 # Azero OS API Reference
 [TOC]
 ### 开启、结束Azero OS服务及设置
@@ -147,13 +151,24 @@ typedef enum {
 	AZERO_EVT_PHONE_CALL_DIALING,
 	///Phone Call in outband and ringing state
 	AZERO_EVT_PHONE_CALL_OUTBOUND_RINGING,
-	///Phone Call in active state, the media is being transmitted 
-	///between the caller and remote party.
+	///Phone Call in active state, the media is being transmitted between the caller and remote party.
 	AZERO_EVT_PHONE_CALL_ACTIVE,
 	///The inbound call has been received.
 	AZERO_EVT_PHONE_CALL_RECEIVED,
 	///Phone Call in inbound ringing state
-	AZERO_EVT_PHONE_CALL_INBOUND_RINGING
+	AZERO_EVT_PHONE_CALL_INBOUND_RINGING,
+	///NET status checked from AlexaClient::ConnectionStatus
+	AZERO_EVT_NET_CONNECTED,
+	AZERO_EVT_NET_PENDING,
+	AZERO_EVT_NET_DISCONNECTED,
+	///Bluetooth status
+	AZERO_EVT_BT_ON_CONNECT,
+	AZERO_EVT_BT_ON_DISCONNECT,
+	AZERO_EVT_BT_ON_ENTER_DISCOVERABLE_MODE,
+	AZERO_EVT_BT_ON_EXIT_DISCOVERABLE_MODE,
+	AZERO_EVT_BT_PLAYING,
+	AZERO_EVT_BT_PAUSED,
+	AZERO_EVT_BT_STOPPED
 }azero_status_event_e;
 ```
 

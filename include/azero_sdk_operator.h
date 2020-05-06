@@ -65,6 +65,49 @@ SAI_API void azero_set_CMCC_andcall_app_key(const char *andcall_app_key,
 SAI_API void azero_set_CUC_channel_key(const char *cuc_channel_no,
                                        const char *cuc_encrypt_key);
 
+/**
+* Enable migu, must enable it before azero_start_service.
+* @param [in] VoWIFI absolute path (/usr/lib/libmigu.so).
+*/
+SAI_API void azero_enable_migu_music(const char *path);
+
+/**
+* Enable andlink, must enable it before azero_start_service.
+*/
+SAI_API void azero_enable_andlink(void);
+
+/**
+ * The following two APIs ,i.e. azero_enable_andcall and azero_enable_wocall, are used to enable Andcall of CMCC 
+ * and Wocall of CUC explicitly. 
+ * 
+ * User could enable either phone type explicitly by invoking corresponding API before azero_start_service. If  
+ * both invoked, only the latter one will take effect while the first one will be ignored.
+ * 
+ * Additionally, user could also enable one phone type inexplicitly by just place the required libraries in 
+ * /usr/lib or /lib, without invoking either of the two below APIs. Then SDK will search for possible phone call 
+ * libraries in /usr/lib and /lib, in order of first Andcall and then Wocall. Phone type will be determined based 
+ * on search results.
+ * 
+ * libvoipengine.so : official AndCall library, must be v1.6.0 or above, user shoud ask CMCC for this lib.
+ * libandcall_wrapper.so : secondary encapsulation of Andcall SDK ,user shoud ask SoundAI for this lib.
+ * libmtccommon_voice.so : official WoCall library, user shoud ask CUC for this lib.
+ * /
+
+/**
+* Enable Andcall, if want to enable Andcall explicitly, must enable it before azero_start_service, 
+* or the enable will be ignored and SDK will search library automatically as described above.
+* @param [in] andcall_lib_path Andcall Lib absolute path etc(/usr/lib/libvoipengine.so).
+* @param [in] andcall_wrapper_path Andcall Lib wrapper absolute path etc(/usr/lib/libandcall_wrapper.so).
+*/
+SAI_API void azero_enable_andcall(const char *andcall_lib_path, const char *andcall_wrapper_path);
+
+/**
+* Enable Wocall, if want to enable Wocall explicitly, must enable it before azero_start_service,
+* or the enable will be ignored and SDK will search library automatically as described above.
+* @param [in] VoWIFI absolute path (/usr/lib/libmtccommon_voice.so).
+*/
+SAI_API void azero_enable_wocall(const char *path);
+
 #if defined(__cplusplus)
 }
 #endif

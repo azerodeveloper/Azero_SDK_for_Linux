@@ -1,3 +1,7 @@
+<div align="right">
+<img src="./assets/soundai.png" height = "30" alt="SoundAI" align=middle />
+</div>
+
 # Azero Linux 新手运行说明
 
 ## 目录

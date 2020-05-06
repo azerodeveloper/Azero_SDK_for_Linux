@@ -1,3 +1,7 @@
+<div align="right">
+<img src="../../assets/soundai.png" height = "30" alt="SoundAI" align=middle />
+</div>
+
 # Azero树莓派运行参考
 
 * [软硬件环境说明](#EnvDescription)

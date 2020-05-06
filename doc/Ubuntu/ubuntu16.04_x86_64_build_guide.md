@@ -1,3 +1,7 @@
+<div align="right">
+<img src="../../assets/soundai.png" height = "30" alt="SoundAI" align=middle />
+</div>
+
 # Ubuntu Linux 16.04 LTS (x86_64) 编译指引
 这是一份快速指引你在Ubuntu Linux 16.04 LTS (x86_64)上编译Azero Sample项目并在Ubuntu Linux 16.04 LTS (x86_64)本地运行的简要手册。
 阅读本文档之前强烈建议先阅读[《Azero Linux 新手运行说明》](../../README.md)。
