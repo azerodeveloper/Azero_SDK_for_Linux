@@ -99,6 +99,7 @@ if((SAI_BUILD_FOR_LINUX_ARM32) AND (SAI_ENABLE_BUILD_OPENDENOISE))
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/libvlc/libidn.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/lib/libasound.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/lib/libsai_micbasex.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/arm-linux-gnueabihf/lib/libz.so
     )
 elseif((SAI_BUILD_FOR_LINUX_ARM64) AND (SAI_ENABLE_BUILD_OPENDENOISE))
     target_link_libraries(sai_client
@@ -112,6 +113,7 @@ elseif((SAI_BUILD_FOR_LINUX_ARM64) AND (SAI_ENABLE_BUILD_OPENDENOISE))
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/libvlc/libidn.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libasound.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libsai_micbasex.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/aarch64-linux-gnu/lib/libz.so
     )
 elseif((SAI_BUILD_FOR_MUSL_OPENWRT) AND (SAI_ENABLE_BUILD_OPENDENOISE)) #need to do
     target_link_libraries(sai_client
@@ -152,6 +154,7 @@ elseif(SAI_BUILD_FOR_LINUX_X86_64)
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAVSCommon.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libAzeroGStreamer.so
         ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libSQLiteStorage.so
+        ${CMAKE_CURRENT_SOURCE_DIR}/link-libs/x86_64-linux/lib/libz.so
         "${PORTAUDIO_LIB_PATH}"
         asound
     )

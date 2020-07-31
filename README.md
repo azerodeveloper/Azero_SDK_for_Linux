@@ -76,8 +76,8 @@ Ubuntu x86-64编译运行方法略有不同，见[Ubuntu Linux 16.04 LTS (x86_64
 
 **设备注册**<a id="DeviceRegist"></a>
 clientId、productId获取方法：
-1. 登录到[Azero开放平台](https://azero.soundai.com)注册账号，账号需进行实名认证。
-2. 接下来创建设备，请参考[设备接入介绍](https://azero.soundai.com/docs/document)进行设备注册。
+1. 登录到[Azero开放平台](https://azero.soundai.com.cn)注册账号，账号需进行实名认证。
+2. 接下来创建设备，请参考[设备接入介绍](https://azero.soundai.com.cn/docs/document)进行设备注册。
 
 ![dev_reg.png](./assets/dev_reg.png)
 
@@ -176,5 +176,5 @@ $ touch savebasex.pcm
 * [Azero树莓派运行参考](./doc/raspberryPI/raspberryPI_guide.md)
 
 ## 更多技能与进阶调优
-* 更丰富的技能和个性化定制体验，请到[技能商店](https://azero.soundai.com/skill-store/all-skills)为设备配置官方或者第三方技能，也可以按照[技能接入介绍](https://azero.soundai.com/docs/document)创建自有技能，实现定制化需求。
+* 更丰富的技能和个性化定制体验，请到[技能商店](https://azero.soundai.com.cn/skill-store/all-skills)为设备配置官方或者第三方技能，也可以按照[技能接入介绍](https://azero.soundai.com.cn/docs/document)创建自有技能，实现定制化需求。
 * 若需将Azero SDK集成到您的工程，并针对您的设备进行唤醒、识别等语音交互效果的调优请参照进阶文档(暂未发布)。
